@@ -12,6 +12,9 @@ output:
     toc: yes
     toc_depth: '4'
     df_print: paged
+  word_document:
+    toc: yes
+    toc_depth: '4'
 always_allow_html: yes
 urlcolor: blue
 linkcolor: red
@@ -143,30 +146,29 @@ eq <- eq %>%
            by = "admin3pcode")
 
 cbr <- read_csv("./data/cbr_com.csv") %>% 
-  # filter(total_value_per_hh != 75) %>%
-  filter(str_detect(cluster, "Multipurpose")) %>% 
-    mutate(month = month(end_date)) %>% 
-      replace_na(list(beneficiaries = 0)) %>% 
+        filter(str_detect(cluster, "Multipurpose")) %>% 
+          mutate(month = month(end_date)) %>% 
+            replace_na(list(beneficiaries = 0)) %>% 
   # Irritating that this recoding has to be done outside of the 
   # read_4ws function, but it'll throw an error otherwise, since 
   # ?some? partners have left some of these columns entirely blank? 
   # Not sure what the casue of the error is and 
   # I have no time to fix it now 
-        mutate(governorate = recode(governorate, 
-                                    "aleppo" = "Aleppo", 
-                                    "ALEPPO" = "Aleppo"), 
-         district = recode(district, 
-                           "Jabal Samman" = "Jebel Saman", 
-                           "azaz" = "A'zaz", 
-                           "jarablus" = "Jarablus"), 
-         sub_district = recode(sub_district, 
-                               "azaz" = "A'zaz", 
-                               "jarablus" = "Jarablus"), 
+              mutate(governorate = recode(governorate, 
+                                          "aleppo" = "Aleppo", 
+                                          "ALEPPO" = "Aleppo"), 
+              district = recode(district, 
+                                "Jabal Samman" = "Jebel Saman", 
+                                "azaz" = "A'zaz", 
+                                "jarablus" = "Jarablus"), 
+              sub_district = recode(sub_district, 
+                                    "azaz" = "A'zaz", 
+                                    "jarablus" = "Jarablus"), 
   # Doing this because Ar-Raqqa has never appeared before
-         previously_assisted = ifelse(admin1pcode %in% c("SY11"), 
-                                      "No", 
-                                      previously_assisted)) %>% 
-          filter(admin1pcode != "SY09")
+              previously_assisted = ifelse(admin1pcode %in% c("SY11"), 
+                                           "No", 
+                                           previously_assisted)) %>% 
+                filter(admin1pcode != "SY09")
   
 
 hno <- read_excel("./data/2023HNO_PiN_Severity_detailedAoI_FORSHARE 15032023.xlsx", skip = 1, 

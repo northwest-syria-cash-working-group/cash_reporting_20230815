@@ -162,7 +162,7 @@ eq <- eq %>%
     select(admin3pcode, eq_score), 
     by = "admin3pcode")
 
-cbr <- read_csv("./data/cbr_com.csv") %>% 
+cbr <- read_csv("./data/cbr_com.csv") %>%
         filter(str_detect(cluster, "Multipurpose")) %>% 
           mutate(month = month(end_date)) %>% 
             replace_na(list(beneficiaries = 0)) %>% 
